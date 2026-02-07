@@ -13,6 +13,7 @@ A simple and clean Python project demonstrating how **LangChain** works with a p
 - ✅ **Fully Extensible** - Simple structure makes it easy to add features
 - ✅ **Educational Value** - Includes 25 test questions with expert-level scoring rubric
 - ✅ **Fast** - FAISS vector database for near-instant retrieval
+- ✅ **Vectorstore Persistence** - Save and reload FAISS cache for faster startup times
 
 ## 📚 Project Overview
 
@@ -188,9 +189,11 @@ langchain_mini_project/
 ├── embeddings.py                # 🔗 Document & vector store setup
 ├── chains.py                    # ⛓️  Retrieval chain (LCEL syntax)
 ├── config.py                    # ⚙️  Configuration & env loading
+├── utils.py                     # 🔧 Cache management utilities
 ├── requirements.txt             # 📦 Python dependencies
 ├── data/
 │   └── data.txt                 # 📚 Knowledge base (2500+ lines)
+├── vectorstore_cache/           # 💾 FAISS cache (auto-generated)
 └── testing_questions.txt        # ❓ 25 test questions with rubric
 ```
 
@@ -198,11 +201,12 @@ langchain_mini_project/
 
 | File | Purpose | Key Features |
 |------|---------|--------------|
-| **app.py** | Main CLI interface | Interactive loop, error handling, graceful exit |
+| **app.py** | Main CLI interface | Interactive loop, error handling, vectorstore auto-loading |
 | **llm.py** | LLM initialization | Loads `llama-2-7b-chat`, sets temperature=0.9 |
-| **embeddings.py** | Document pipeline | Loading → Splitting → Embedding → Vector Store |
+| **embeddings.py** | Document pipeline | Loading → Splitting → Embedding → Vector Store → Caching |
 | **chains.py** | LCEL retrieval chain | Pipe syntax, context formatter, prompt template |
-| **config.py** | Configuration management | Loads .env variables for flexibility |
+| **config.py** | Configuration management | Environment variables, cache paths, data paths |
+| **utils.py** | Cache utilities | Clear, rebuild, and check vectorstore cache status |
 | **data/data.txt** | Knowledge base | Comprehensive LangChain documentation |
 | **testing_questions.txt** | Test suite | 25 questions, 7 categories, scoring rubric |
 
@@ -414,10 +418,12 @@ This project is completely local:
 
 ## 📝 Notes
 
-- The first run will download the embedding model (~50MB)
+- First run creates and caches the vectorstore (~30-60 seconds)
+- Subsequent runs load the cached vectorstore in ~2-3 seconds
+- Cache is stored in `vectorstore_cache/` directory (auto-created)
+- To update the cache, run: `python utils.py rebuild`
 - Responses depend on the quality of documents in `data/data.txt`
 - You can replace `data.txt` with any text file you want to analyze
-- The vector store is created in-memory each time (not persisted)
 
 ---
 
@@ -429,6 +435,40 @@ This project is completely local:
 | Slow first run          | First request downloads embedding model, be patient |
 | No response from LLM    | Ensure Ollama is running (if using Ollama locally) |
 | Type warnings           | Disable Pylance type checking in VS Code settings  |
+
+---
+
+---
+
+## 💾 Vectorstore Cache Management
+
+The project automatically caches the FAISS vectorstore for faster startup times.
+
+### Available Commands
+
+```bash
+# Check cache status
+python utils.py status
+
+# Rebuild the vectorstore from scratch
+python utils.py rebuild
+
+# Clear the cache (vectorstore will be recreated on next run)
+python utils.py clear
+```
+
+### How It Works
+
+1. **First Run**: Creates embeddings and saves to `vectorstore_cache/`
+2. **Subsequent Runs**: Loads cached vectorstore (much faster)
+3. **Cache Location**: `./vectorstore_cache/` (added to `.gitignore`)
+4. **Cache Size**: Typically 10-50 MB depending on document size
+
+### When to Rebuild
+
+- After updating `data/data.txt` with new documents
+- If embeddings settings change (chunk size, overlap, embedding model)
+- If cache corruption is suspected
 
 ---
 
