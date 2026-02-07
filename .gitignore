@@ -10,3 +10,5 @@ wheels/
 .venv
 .env
 venv/.env
+# FAISS Vectorstore cache
+vectorstore_cache/

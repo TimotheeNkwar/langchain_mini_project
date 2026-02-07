@@ -2,13 +2,14 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
 
 from llm import load_llm
-from embeddings import create_vectorstore
+from embeddings import get_or_create_vectorstore
 from chains import create_chain
 
 
 def main():
+    print("🚀 Starting Q&A Assistant...\n")
     llm = load_llm()
-    vectorstore = create_vectorstore()
+    vectorstore = get_or_create_vectorstore()
     qa_chain = create_chain(llm, vectorstore)
 
     while True:
