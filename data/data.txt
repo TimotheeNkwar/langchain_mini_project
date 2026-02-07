@@ -503,7 +503,6 @@ To install LangChain, use pip:
 pip install langchain langchain-openai faiss-cpu python-dotenv
 ```
 
-<<<<<<< HEAD
 ## Memory Systems in LangChain
 
 Memory allows applications to retain context from previous interactions. LangChain supports several types of memory:
@@ -1049,8 +1048,3 @@ Track application behavior, errors, and performance metrics for production syste
 ## Conclusion
 
 LangChain revolutionizes the way we build applications with language models. It allows developers to create sophisticated solutions without having to manage the low-level details of the models themselves. By providing modular, composable components, LangChain accelerates development and enables rapid experimentation with different architectures and strategies.
-=======
-## Conclusion
-
-LangChain revolutionizes the way we build applications with language models. It allows developers to create sophisticated solutions without having to manage the low-level details of the models themselves.
->>>>>>> d640505 (feat: complete langchain Q&A assistant project with English docs)
