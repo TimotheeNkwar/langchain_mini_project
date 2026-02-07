@@ -1,0 +1,97 @@
+# 25 Test Questions for LangChain Q&A System
+
+## Basic Understanding (Questions 1-5)
+
+1. What is LangChain and what is its primary purpose?
+2. Name the six key components of LangChain.
+3. What is the main purpose of embeddings in LangChain?
+4. What are the advantages of using LangChain?
+5. List five use cases for LangChain applications.
+
+## Text Chunking & Document Processing (Questions 6-10)
+
+6. What are the four main chunking techniques described in the documentation?
+7. What is the recommended chunk size range for RAG applications?
+8. What is chunk overlap and what is its purpose?
+9. What are the drawbacks of fixed-size chunking?
+10. Why is metadata preservation important during chunking?
+
+## Retrievers & Retrieval (Questions 11-15)
+
+11. Name and explain the five types of retrievers available in LangChain.
+12. What is the difference between Semantic Similarity Search and BM25?
+13. What does MMR (Maximal Marginal Relevance) optimize for?
+14. What is the optimal range for the 'k' parameter in retrieval?
+15. What are the four retriever evaluation metrics mentioned?
+
+## Context Management (Questions 16-18)
+
+16. What is context in the RAG system and why is it critical?
+17. What is a context window and what does it include?
+18. Explain the four context ranking strategies and when to use each.
+
+## Embeddings & Vector Stores (Questions 19-21)
+
+19. What are the key differences between OpenAI embeddings and HuggingFace embeddings?
+20. Name five vector store options available in LangChain.
+21. What is cosine similarity and what range does it operate in?
+
+## Advanced Topics (Questions 22-25)
+
+22. What is RAG (Retrieval-Augmented Generation) and how does it work?
+23. Explain the difference between HNSW and IVF indexing methods for similarity search.
+24. What are the main challenges in context management and how can they be addressed?
+25. What is LCEL (LangChain Expression Language) and what are its benefits?
+
+---
+
+## Answer Guidelines
+
+### Expected Quality Answers
+
+**Question 1 Answer:**
+LangChain is a Python library that simplifies the development of applications based on language models. It provides an abstraction for working with many different LLMs and offers a unified interface for their interaction, enabling developers to build complex AI applications without managing low-level details.
+
+**Question 6 Answer:**
+The four main chunking techniques are:
+1. Fixed-Size Chunking - splits text into predetermined character/token counts
+2. Recursive Character Chunking - splits on separators (paragraph, line, space) while preserving structure
+3. Semantic Chunking - groups similar sentences using embeddings
+4. Token-based Chunking - uses tokenizers to count actual tokens for accuracy
+
+**Question 11 Answer:**
+1. Vector Store Retrievers - semantic similarity-based search
+2. Multi-Query Retrievers - generates multiple query variations
+3. Parent-Document Retrievers - returns larger parent documents
+4. Ensemble Retrievers - combines multiple retrieval strategies
+5. Knowledge Graph Retrievers - retrieves from structured knowledge graphs
+
+**Question 22 Answer:**
+RAG combines three phases:
+1. Retrieval Phase - Finds relevant documents based on query using embeddings
+2. Augmentation Phase - Formats retrieved documents as context for the prompt
+3. Generation Phase - LLM generates response informed by retrieved context, reducing hallucinations
+
+**Question 23 Answer:**
+HNSW (Hierarchical Navigable Small World) is a fast approximate nearest neighbor search with ~95%+ accuracy, good memory efficiency, and serves as the default for many systems. IVF (Inverted File Index) divides search space into partitions and searches partitions first, offering very fast search for large datasets with tunable accuracy-speed trade-off.
+
+### Testing Criteria
+
+- **Factual Recall**: Questions 1-5, 19-21 test basic knowledge
+- **Concept Understanding**: Questions 6-10, 16-18 test comprehension of key concepts
+- **Application Knowledge**: Questions 11-15, 22-25 test understanding of practical implementation
+- **Comparative Analysis**: Questions 12-13, 23 require comparing different approaches
+- **Strategic Thinking**: Questions 18, 24 require understanding trade-offs and best practices
+
+### Difficulty Levels
+
+- **Easy**: Questions 1-5, 19-20 - Basic recall
+- **Medium**: Questions 6-10, 21, 25 - Concept application
+- **Hard**: Questions 11-18, 22-24 - Deep understanding and analysis
+
+### Suggested Minimum Scores
+
+- 80%+ (20/25): Excellent understanding of LangChain
+- 60-79% (15-19/25): Good understanding with some gaps
+- 40-59% (10-14/25): Basic understanding
+- Below 40% (< 10/25): Needs further study
