@@ -8,7 +8,7 @@ A simple and clean Python project demonstrating how **LangChain** works with a p
 
 - ✅ **Zero API Dependencies** - Uses local embeddings and LLM
 - ✅ **Production-Ready Architecture** - Modern LCEL (LangChain Expression Language) syntax
-- ✅ **Comprehensive Knowledge Base** - 2500+ lines of LangChain documentation included
+- ✅ **Comprehensive Knowledge Base** - 1000+ lines of LangChain documentation included
 - ✅ **Easy to Understand** - Clean, well-documented code with step-by-step workflow
 - ✅ **Fully Extensible** - Simple structure makes it easy to add features
 - ✅ **Educational Value** - Includes 25 test questions with expert-level scoring rubric
@@ -62,11 +62,9 @@ python app.py
 
 ## 🛠️ How It Works
 
-## 🛠️ How It Works
-
 ### Architecture Flow
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                        DATA PIPELINE                         │
 ├─────────────────────────────────────────────────────────────┤
@@ -121,7 +119,7 @@ python app.py
 
 **Example:**
 
-```
+```text
 Original chunk ends with: "...Vector stores like FAISS" 
 Next chunk starts with:   "...FAISS and Pinecone"
 (50 char overlap preserves connection)
@@ -182,7 +180,7 @@ qa_chain = (
 
 ## 📁 Project Structure
 
-```
+```text
 langchain_mini_project/
 ├── README.md                    # 📖 This file
 ├── app.py                       # 🚀 Main entry point
@@ -322,7 +320,7 @@ python app.py
 
 ### Example Questions
 
-```bash
+```text
 ❓ Your question: What is LangChain?
 🤖 Answer: LangChain is a powerful framework for developing applications...
 
