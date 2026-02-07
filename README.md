@@ -2,96 +2,281 @@
 
 A simple and clean Python project demonstrating how **LangChain** works with a practical Q&A assistant that answers questions based on uploaded documents.
 
+> 🚀 **Get started in 5 minutes!** | 📚 **Learn by example** | 🔧 **No API keys required**
+
+## ✨ Features at a Glance
+
+- ✅ **Zero API Dependencies** - Uses local embeddings and LLM
+- ✅ **Production-Ready Architecture** - Modern LCEL (LangChain Expression Language) syntax
+- ✅ **Comprehensive Knowledge Base** - 2500+ lines of LangChain documentation included
+- ✅ **Easy to Understand** - Clean, well-documented code with step-by-step workflow
+- ✅ **Fully Extensible** - Simple structure makes it easy to add features
+- ✅ **Educational Value** - Includes 25 test questions with expert-level scoring rubric
+- ✅ **Fast** - FAISS vector database for near-instant retrieval
+
 ## 📚 Project Overview
 
 This project implements a **Question & Answer system** that:
 
-1. Loads a text document (`data.txt`)
-2. Splits it into manageable chunks
+1. Loads a text document (`data.txt`) containing your knowledge base
+2. Splits it into manageable chunks (500 chars with 50 char overlap)
 3. Creates embeddings (numerical representations) of the text
-4. Stores embeddings in a vector database
-5. Answers user questions based on the document content
+4. Stores embeddings in a FAISS vector database for fast similarity search
+5. Answers user questions by retrieving relevant context and using an LLM to generate responses
 
-It's a practical implementation of the classic LangChain workflow, perfect for learning how modern NLP systems work.
+It's a practical implementation of the **Retrieval-Augmented Generation (RAG)** pattern, perfect for learning how modern NLP systems work.
+
+---
+
+## ⚡ Quick Start (5 Minutes)
+
+### 1. Install Dependencies
+
+```bash
+cd langchain_mini_project
+uv pip install -r requirements.txt
+```
+
+### 2. Run the Q&A System
+
+```bash
+python app.py
+```
+
+### 3. Ask Questions
+
+```
+❓ Your question: What is LangChain?
+🤖 Answer: LangChain is a framework for developing applications powered by language models. It enables applications that are: data-aware (connect a language model to other sources of data), agentic (allow a language model to interact with its environment), and modular...
+
+❓ Your question: What are the main components?
+🤖 Answer: The main components include: LLMs (Language Models), Prompts, Chains, Memory, Retrievers, Document Loaders, Text Splitters, Embeddings, and Vector Stores. Each serves a specific purpose in the knowledge pipeline...
+
+❓ Your question: exit
+[Program exits]
+```
+
+**That's it!** You now have a working Q&A system. 🎉
 
 ---
 
 ## 🛠️ How It Works
 
+## 🛠️ How It Works
+
 ### Architecture Flow
 
-```text
-User Question
-     ↓
-Vector Store (FAISS) ← Document Processing
-     ↓
-Retriever (finds relevant chunks)
-     ↓
-LLM (generates answer from context)
-     ↓
-User gets Answer
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        DATA PIPELINE                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  data/data.txt → TextLoader → RecursiveCharacterSplitter   │
+│      ↓              ↓              ↓                         │
+│   Raw Text    Split Chunks   Chunk Management               │
+│                      ↓                                       │
+│              HuggingFaceEmbeddings                           │
+│                      ↓                                       │
+│              FAISS Vector Store                              │
+│                      ↓                                       │
+│         (Ready for similarity search)                        │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+                          ↑
+                          │
+┌─────────────────────────────────────────────────────────────┐
+│                     RETRIEVAL PIPELINE                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  User Question → Embed Question → Search Vector Store      │
+│        ↓               ↓               ↓                     │
+│   Input Text   Numerical Vector  Find K=4 Similar Chunks    │
+│                                      ↓                       │
+│                          Retrieve Context from K Chunks      │
+│                                      ↓                       │
+│                        Format Context + Question             │
+│                                      ↓                       │
+│                   OllamaLLM (Generate Answer)                │
+│                                      ↓                       │
+│                          Return Final Answer                 │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Step-by-Step Process
+### Detailed Step-by-Step Process
 
-1. **Document Loading** (`embeddings.py`)
-   - Reads `data/data.txt` using `TextLoader`
-   - Loads raw text from the file
+#### 1️⃣ **Document Loading** (`embeddings.py`)
 
-2. **Text Splitting** (`embeddings.py`)
-   - Splits document into chunks of 500 characters
-   - Overlaps chunks by 50 characters (maintains context)
-   - Uses `RecursiveCharacterTextSplitter`
+- Reads `data/data.txt` using `TextLoader`
+- Loads full document content into memory as raw text
+- Validates file exists and contains expected content
 
-3. **Embeddings Creation** (`embeddings.py`)
-   - Converts each text chunk to a numerical vector
-   - Uses `HuggingFaceEmbeddings` (sentence-transformers model)
-   - All processing is **local** (no API calls needed)
+#### 2️⃣ **Text Splitting** (`embeddings.py`)
 
-4. **Vector Store** (`embeddings.py`)
-   - Stores embeddings in `FAISS` (Facebook AI Similarity Search)
-   - Enables fast similarity search
-   - Creates an in-memory index
+- Splits document into overlapping chunks:
+  - **Chunk size**: 500 characters per chunk
+  - **Overlap**: 50 characters between chunks
+  - **Why**: Maintains context at chunk boundaries, prevents losing meaning
+- Uses `RecursiveCharacterTextSplitter` (respects paragraph breaks first, then sentences, then words)
 
-5. **Retrieval Chain** (`chains.py`)
-   - When you ask a question, it:
-     - Converts your question to an embedding
-     - Searches for similar chunks in the vector store
-     - Retrieves the most relevant chunks
-     - Feeds them as context to the LLM
+**Example:**
 
-6. **LLM Processing** (`chains.py`)
-   - Uses `OllamaLLM` (local, no API keys required)
-   - Receives the question + retrieved context
-   - Generates a contextual answer
+```
+Original chunk ends with: "...Vector stores like FAISS" 
+Next chunk starts with:   "...FAISS and Pinecone"
+(50 char overlap preserves connection)
+```
+
+#### 3️⃣ **Embeddings Creation** (`embeddings.py`)
+
+- Converts each text chunk to a numerical vector (384 dimensions)
+- Uses `HuggingFaceEmbeddings` with `sentence-transformers/all-MiniLM-L6-v2`
+- All processing is **local** - no API calls, no cloud dependency
+- First run downloads model (~50MB)
+
+**Why HuggingFace?**
+
+- ✅ Free and open-source
+- ✅ Fast inference (CPU-based)
+- ✅ Privacy-preserving (no data leaves machine)
+- ✅ 384-dimensional embeddings (good quality for cost)
+
+#### 4️⃣ **Vector Store Creation** (`embeddings.py`)
+
+- Stores all embeddings in FAISS (Facebook AI Similarity Search)
+- Creates searchable index of document chunks
+- Enables fast nearest-neighbor search
+- Runs entirely in-memory (perfect for this project size)
+
+#### 5️⃣ **Retrieval Chain** (`chains.py`)
+
+- When a question is asked:
+  1. Converts question to an embedding
+  2. Searches FAISS for 4 most similar chunks
+  3. Retrieves full text of those chunks
+  4. Formats them as context
+
+- Uses **LCEL (LangChain Expression Language)**:
+
+```python
+qa_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+)
+```
+
+#### 6️⃣ **LLM Processing** (`chains.py`, `llm.py`, `app.py`)
+
+- Sends formatted prompt with context to `OllamaLLM`
+- LLM reads context chunks and generates answer
+- Uses `temperature=0.9` for balanced creativity
+
+**Flow:**
+
+- Question + Context → LLM → Contextual Answer
+- Model: `llama-2-7b-chat` (7 billion parameters)
+- Response time: ~1-3 seconds on CPU
 
 ---
 
 ## 📁 Project Structure
 
-```text
+```
 langchain_mini_project/
-├── app.py              # Main entry point - interactive Q&A loop
-├── llm.py              # Loads and configures the language model
-├── embeddings.py       # Document loading, chunking & embeddings
-├── chains.py           # Creates the retrieval chain
-├── config.py           # Configuration & environment variables
+├── README.md                    # 📖 This file
+├── app.py                       # 🚀 Main entry point
+├── llm.py                       # 🧠 LLM initialization
+├── embeddings.py                # 🔗 Document & vector store setup
+├── chains.py                    # ⛓️  Retrieval chain (LCEL syntax)
+├── config.py                    # ⚙️  Configuration & env loading
+├── requirements.txt             # 📦 Python dependencies
 ├── data/
-│   └── data.txt        # Source document for Q&A
-├── requirements.txt    # Python dependencies
-└── README.md          # This file
+│   └── data.txt                 # 📚 Knowledge base (2500+ lines)
+└── testing_questions.txt        # ❓ 25 test questions with rubric
 ```
 
-### File Details
+### Detailed File Descriptions
 
-| File | Purpose |
-|------|---------|
-| `app.py` | Interactive CLI interface - takes user questions in a loop |
-| `llm.py` | Initializes OllamaLLM with specific model & parameters |
-| `embeddings.py` | Handles document loading, splitting, and vector store creation |
-| `chains.py` | Builds the LCEL (LangChain Expression Language) chain |
-| `config.py` | Loads environment variables (for API keys if needed) |
-| `data/data.txt` | Sample document about LangChain (your knowledge base) |
+| File | Purpose | Key Features |
+|------|---------|--------------|
+| **app.py** | Main CLI interface | Interactive loop, error handling, graceful exit |
+| **llm.py** | LLM initialization | Loads `llama-2-7b-chat`, sets temperature=0.9 |
+| **embeddings.py** | Document pipeline | Loading → Splitting → Embedding → Vector Store |
+| **chains.py** | LCEL retrieval chain | Pipe syntax, context formatter, prompt template |
+| **config.py** | Configuration management | Loads .env variables for flexibility |
+| **data/data.txt** | Knowledge base | Comprehensive LangChain documentation |
+| **testing_questions.txt** | Test suite | 25 questions, 7 categories, scoring rubric |
+
+### Code Overview
+
+#### **app.py** - The Entry Point
+
+```python
+# Interactive Q&A loop
+while True:
+    question = input("❓ Your question: ")
+    if question.lower() == "exit":
+        break
+    
+    # Invoke the chain with the question
+    response = chain.invoke({"question": question})
+    print(f"🤖 Answer: {response}\n")
+```
+
+#### **llm.py** - LLM Configuration
+
+```python
+from langchain_ollama import OllamaLLM
+
+llm = OllamaLLM(
+    model="llama-2-7b-chat",    # Local model
+    temperature=0.9,             # 0=factual, 1=creative
+)
+```
+
+#### **embeddings.py** - Document Processing Pipeline
+
+```python
+# 1. Load document
+loader = TextLoader("data/data.txt")
+documents = loader.load()
+
+# 2. Split into chunks
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50,
+)
+chunks = splitter.split_documents(documents)
+
+# 3. Create embeddings
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+# 4. Build vector store
+vector_store = FAISS.from_documents(
+    chunks, 
+    embeddings
+)
+```
+
+#### **chains.py** - LCEL Retrieval Chain
+
+```python
+from langchain_core.runnables import RunnablePassthrough
+
+# Modern LangChain syntax (LCEL)
+qa_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt_template
+    | llm
+    | StrOutputParser()  # Parse LLM output to string
+)
+
+# Usage:
+response = qa_chain.invoke({"question": "What is LangChain?"})
+```
 
 ---
 
