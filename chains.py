@@ -1,5 +1,7 @@
-from langchain_core.prompts import PromptTemplate  #type: ignore
-from langchain_core.runnables import RunnablePassthrough  #type: ignore
+
+
+from langchain_core.prompts import PromptTemplate 
+from langchain_core.runnables import RunnablePassthrough  
 
 
 def create_chain(llm, vectorstore):
@@ -17,7 +19,7 @@ Réponse:"""
     )
     
     qa_chain = (
-        {"context": retriever, "question": RunnablePassthrough()}  #type: ignore
+        {"context": retriever, "question": RunnablePassthrough()}  
         | prompt
         | llm
     )

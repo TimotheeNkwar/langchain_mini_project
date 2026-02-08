@@ -7,7 +7,7 @@ from chains import create_chain
 
 
 def main():
-    print("🚀 Starting Q&A Assistant...\n")
+    print("Starting Q&A Assistant...\n")
     llm = load_llm()
     vectorstore = get_or_create_vectorstore()
     qa_chain = create_chain(llm, vectorstore)
