@@ -16,10 +16,6 @@ A simple and clean Python project demonstrating how **LangChain** works with a p
 - ✅ **Vectorstore Persistence** - Save and reload FAISS cache for faster startup times
 - ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
 - ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
-- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
-- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
-- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
-- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
 
 ## 📚 Project Overview
 
