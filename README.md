@@ -11,9 +11,15 @@ A simple and clean Python project demonstrating how **LangChain** works with a p
 - ✅ **Comprehensive Knowledge Base** - 1000+ lines of LangChain documentation included
 - ✅ **Easy to Understand** - Clean, well-documented code with step-by-step workflow
 - ✅ **Fully Extensible** - Simple structure makes it easy to add features
-- ✅ **Educational Value** - Includes 25 test questions with expert-level scoring rubric
+- ✅ **Educational Value** - Includes 30 test questions with expert-level scoring rubric
 - ✅ **Fast** - FAISS vector database for near-instant retrieval
 - ✅ **Vectorstore Persistence** - Save and reload FAISS cache for faster startup times
+- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
+- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
+- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
+- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
+- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
+- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
 
 ## 📚 Project Overview
 
@@ -188,13 +194,15 @@ langchain_mini_project/
 ├── llm.py                       # 🧠 LLM initialization
 ├── embeddings.py                # 🔗 Document & vector store setup
 ├── chains.py                    # ⛓️  Retrieval chain (LCEL syntax)
+├── memory.py                    # 💾 MongoDB conversation memory
+├── doc.py                       # 📄 Document conversion (PDF/DOCX to text)
 ├── config.py                    # ⚙️  Configuration & env loading
 ├── utils.py                     # 🔧 Cache management utilities
 ├── requirements.txt             # 📦 Python dependencies
 ├── data/
 │   └── data.txt                 # 📚 Knowledge base (2500+ lines)
 ├── vectorstore_cache/           # 💾 FAISS cache (auto-generated)
-└── testing_questions.txt        # ❓ 25 test questions with rubric
+└── testing_questions.txt        # ❓ 30 test questions with rubric (including memory tests)
 ```
 
 ### Detailed File Descriptions
@@ -205,7 +213,9 @@ langchain_mini_project/
 | **llm.py** | LLM initialization | Loads `llama-2-7b-chat`, sets temperature=0.9 |
 | **embeddings.py** | Document pipeline | Loading → Splitting → Embedding → Vector Store → Caching |
 | **chains.py** | LCEL retrieval chain | Pipe syntax, context formatter, prompt template |
-| **config.py** | Configuration management | Environment variables, cache paths, data paths |
+| **memory.py** | MongoDB conversation memory | Persistent storage, conversation tracking, history retrieval |
+| **doc.py** | Document conversion | PDF/DOCX to text using Docling, markdown export |
+| **config.py** | Configuration management | Environment variables, cache paths, MongoDB settings |
 | **utils.py** | Cache utilities | Clear, rebuild, and check vectorstore cache status |
 | **data/data.txt** | Knowledge base | Comprehensive LangChain documentation |
 | **testing_questions.txt** | Test suite | 25 questions, 7 categories, scoring rubric |
@@ -365,10 +375,13 @@ OPENAI_API_KEY=your_key_here  # Not required for this project
 |---------|---------|
 | `langchain` | Core framework |
 | `langchain-community` | Additional integrations |
+| `langchain-huggingface` | HuggingFace embeddings |
 | `langchain-ollama` | Local LLM integration |
 | `langchain-text-splitters` | Text chunking |
 | `sentence-transformers` | Embedding model |
 | `faiss-cpu` | Vector database |
+| `pymongo` | MongoDB integration |
+| `docling` | Document conversion (PDF/DOCX) |
 | `python-dotenv` | Environment variables |
 
 ---
@@ -412,6 +425,7 @@ This project is completely local:
 - ✅ Uses local embedding model (HuggingFace)
 - ✅ Uses local LLM (Ollama/Llama2)
 - ✅ No OpenAI API calls
+- ✅ Optional MongoDB for conversation memory
 - ✅ Runs entirely offline (after first model download)
 
 ---
@@ -434,13 +448,111 @@ This project is completely local:
 | `ModuleNotFoundError`   | Run `uv pip install -r requirements.txt`           |
 | Slow first run          | First request downloads embedding model, be patient |
 | No response from LLM    | Ensure Ollama is running (if using Ollama locally) |
+| MongoDB connection error | Ensure MongoDB is running on localhost:27017       |
 | Type warnings           | Disable Pylance type checking in VS Code settings  |
 
 ---
 
 ---
 
-## 💾 Vectorstore Cache Management
+## �️ MongoDB Integration (Conversation Memory)
+
+### Setup
+
+1. **Start MongoDB locally**
+
+```bash
+# Docker (recommended)
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+
+# macOS (Homebrew)
+brew services start mongodb-community
+
+# Linux (Ubuntu/Debian)
+sudo systemctl start mongod
+```
+
+1. **Configure MongoDB in config.py**
+
+```python
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+DB_NAME = "langchain_qa"
+COLLECTION_NAME = "conversations"
+```
+
+1. **Use Memory in app.py**
+
+```python
+from memory import create_memory
+
+memory = create_memory(
+    mongo_uri=MONGO_URI,
+    db_name=DB_NAME,
+    collection_name=COLLECTION_NAME
+)
+```
+
+### Memory Features
+
+- **Persistent Storage**: All conversations saved to MongoDB
+- **Unique Conversation IDs**: Each session has a unique identifier
+- **Timestamped Exchanges**: Every question-answer pair is timestamped
+- **Conversation Retrieval**: Load past conversations by ID
+- **Statistics**: View conversation metrics
+
+### Memory Methods
+
+```python
+# Save interaction
+memory.save_context(
+    {"question": "What is LangChain?"},
+    {"output": "LangChain is..."}
+)
+
+# Load recent history (last 5 exchanges)
+memory.load_memory_variables({})
+
+# Load conversation from MongoDB
+memory.load_from_mongodb(conversation_id)
+
+# Get all conversations
+memory.get_all_conversations()
+
+# Get conversation statistics
+memory.get_conversation_stats()
+
+# Clear memory
+memory.clear()
+```
+
+---
+
+## 📄 Document Conversion (doc.py)
+
+Convert PDF, DOCX, and other document formats to text for use as knowledge bases.
+
+### Usage
+
+```python
+from doc import convert_doc_to_txt
+
+# Convert PDF to Markdown
+convert_doc_to_txt("data/resume.pdf", "data/resume.md")
+```
+
+### Supported Formats
+
+- PDF
+- DOCX (Microsoft Word)
+- PPTX (PowerPoint)
+- Images (PNG, JPG)
+- HTML
+- Markdown
+- And more with Docling
+
+---
+
+## �💾 Vectorstore Cache Management
 
 The project automatically caches the FAISS vectorstore for faster startup times.
 
@@ -476,17 +588,74 @@ python utils.py clear
 
 To extend this project, you could:
 
-- Add memory (remember previous conversations)
-- Support multiple documents
-- Add a web interface (Flask/FastAPI)
-- Use different LLMs (GPT, Claude, etc.)
-- Persist the vector store to disk
-- Add document chat features
+- Add web interface (Flask/FastAPI)
+- Use different LLMs (GPT-4, Claude, Llama, etc.)
+- Support multiple vector stores (Pinecone, Weaviate, etc.)
+- Add authentication for multiple users
+- Implement conversation search and filtering
+- Add document grouping and management
+- Export conversations to PDF/JSON
+- Add RAG evaluation metrics
 
 ---
 
-## 📄 License
+## � MongoDB Integration (Conversation Memory)
+
+### Setup
+
+1. **Start MongoDB locally**
+
+```bash
+# Docker (recommended)
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+
+# macOS
+brew services start mongodb-community
+
+# Linux
+sudo systemctl start mongod
+```
+
+1. **Configure in config.py**
+
+```python
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+DB_NAME = "langchain_qa"
+COLLECTION_NAME = "conversations"
+```
+
+### Memory Features
+
+- **Persistent Storage**: All conversations saved to MongoDB
+- **Unique Conversation IDs**: Each session has identifier
+- **Timestamped Exchanges**: Every Q&A is timestamped  
+- **Conversation Retrieval**: Load past conversations by ID
+- **Statistics**: View conversation metrics
+
+---
+
+## 📄 Document Conversion (doc.py)
+
+Convert PDF, DOCX, and other formats to text for knowledge bases.
+
+### Usage
+
+```python
+from doc import convert_doc_to_txt
+convert_doc_to_txt("data/resume.pdf", "data/resume.md")
+```
+
+### Supported Formats
+
+- PDF, DOCX, PPTX
+- Images (PNG, JPG)
+- HTML, Markdown
+- And more with Docling
+
+---
+
+## �📄 License
 
 This project is provided as a learning resource.
 
-Happy coding! 🚀
+Happy coding!

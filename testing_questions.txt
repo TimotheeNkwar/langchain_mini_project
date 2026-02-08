@@ -43,6 +43,14 @@
 24. What are the main challenges in context management and how can they be addressed?
 25. What is LCEL (LangChain Expression Language) and what are its benefits?
 
+## Memory & Conversation Management (Questions 26-30)
+
+26. Does the system remember information from earlier in the conversation? (Test: Ask about something, then ask a follow-up question that references it)
+27. How does conversation memory improve the quality of answers in a multi-turn dialogue?
+28. If there is a contradiction between the document context and a statement from earlier in the conversation, which should take priority?
+29. Can the system correct itself based on feedback provided in the conversation history?
+30. How many previous exchanges should the system remember for optimal context without overwhelming the LLM?
+
 ---
 
 ## Answer Guidelines
@@ -82,16 +90,17 @@ HNSW (Hierarchical Navigable Small World) is a fast approximate nearest neighbor
 - **Application Knowledge**: Questions 11-15, 22-25 test understanding of practical implementation
 - **Comparative Analysis**: Questions 12-13, 23 require comparing different approaches
 - **Strategic Thinking**: Questions 18, 24 require understanding trade-offs and best practices
+- **Memory & Conversation Testing**: Questions 26-30 test conversation memory persistence and handling
 
 ### Difficulty Levels
 
 - **Easy**: Questions 1-5, 19-20 - Basic recall
-- **Medium**: Questions 6-10, 21, 25 - Concept application
-- **Hard**: Questions 11-18, 22-24 - Deep understanding and analysis
+- **Medium**: Questions 6-10, 21, 25-27 - Concept application and memory testing
+- **Hard**: Questions 11-18, 22-24, 28-30 - Deep understanding, analysis, and advanced memory scenarios
 
 ### Suggested Minimum Scores
 
-- 80%+ (20/25): Excellent understanding of LangChain
-- 60-79% (15-19/25): Good understanding with some gaps
-- 40-59% (10-14/25): Basic understanding
-- Below 40% (< 10/25): Needs further study
+- 80%+ (24/30): Excellent understanding of LangChain and memory handling
+- 60-79% (18-23/30): Good understanding with some gaps in memory management
+- 40-59% (12-17/30): Basic understanding
+- Below 40% (< 12/30): Needs further study
