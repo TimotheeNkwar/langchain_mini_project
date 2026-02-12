@@ -13,9 +13,9 @@ class ConversationMemory:
         Initializes a ConversationMemory instance.
 
         Args:
-            mongo_uri (str, optional): The MongoDB URI. Defaults to "mongodb://localhost:27017/".
-            db_name (str, optional): The name of the MongoDB database. Defaults to "langchain_qa".
-            collection_name (str, optional): The name of the MongoDB collection. Defaults to "conversations".
+            mongo_uri (str): MongoDB connection URI. Defaults to MONGO_URI.
+            db_name (str): Name of the MongoDB database. Defaults to DB_NAME.
+            collection_name (str): Name of the MongoDB collection. Defaults to COLLECTION_NAME.
         """
         self.mongo_uri = mongo_uri
         self.db_name = db_name
