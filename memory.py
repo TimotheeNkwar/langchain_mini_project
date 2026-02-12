@@ -96,7 +96,7 @@ class ConversationMemory:
         return {"conversation_id": cid, "total_exchanges": count}
 
 
-def create_memory(mongo_uri="mongodb://localhost:27017/"):
+def create_memory(mongo_uri=MONGO_URI):
     """Create a conversation memory buffer with MongoDB."""
     memory = ConversationMemory(mongo_uri=mongo_uri)
     return memory
