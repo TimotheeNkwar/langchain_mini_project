@@ -9,6 +9,13 @@ from config import MONGO_URI, DB_NAME, COLLECTION_NAME
 
 
 def main():
+    """
+    Main entry point for the Q&A Assistant.
+
+    This function initializes the LLM, vector store, and memory, then enters an infinite loop where it prompts the user for a question, invokes the chain to get an answer, and saves the question and answer to memory.
+
+    :return: None
+    """
     print("Starting Q&A Assistant...\n")
     llm = load_llm()
     vectorstore = get_or_create_vectorstore()

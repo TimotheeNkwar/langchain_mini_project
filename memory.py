@@ -8,7 +8,15 @@ from config import MONGO_URI, DB_NAME, COLLECTION_NAME
 class ConversationMemory:
     """Conversation memory with MongoDB persistence."""
     
-    def __init__(self, mongo_uri="mongodb://localhost:27017/", db_name="langchain_qa", collection_name="conversations"):
+    def __init__(self, mongo_uri=MONGO_URI, db_name=DB_NAME, collection_name=COLLECTION_NAME):
+        """
+        Initializes a ConversationMemory instance.
+
+        Args:
+            mongo_uri (str, optional): The MongoDB URI. Defaults to "mongodb://localhost:27017/".
+            db_name (str, optional): The name of the MongoDB database. Defaults to "langchain_qa".
+            collection_name (str, optional): The name of the MongoDB collection. Defaults to "conversations".
+        """
         self.mongo_uri = mongo_uri
         self.db_name = db_name
         self.collection_name = collection_name
