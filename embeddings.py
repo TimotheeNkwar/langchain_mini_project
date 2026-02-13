@@ -4,8 +4,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter 
 from langchain_community.embeddings import HuggingFaceEmbeddings 
 from langchain_community.vectorstores import FAISS 
-from config import VECTORSTORE_SAVE_PATH, DATA_PATH , MODEL_NAME
-
+from config import DATA_PATH, MODEL_NAME, VECTORSTORE_SAVE_PATH
 
 def create_vectorstore():
     """Create a new FAISS vectorstore from documents and save it."""

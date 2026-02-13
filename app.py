@@ -5,8 +5,7 @@ from llm import load_llm
 from embeddings import get_or_create_vectorstore
 from chains import create_chain
 from memory import create_memory
-from config import MONGO_URI, DB_NAME, COLLECTION_NAME
-
+from config import MONGO_URI
 
 def main():
     """
