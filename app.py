@@ -33,7 +33,7 @@ def main():
         memory.save_context({"question": question}, {"output": answer})
         
         # Display memory for testing
-        #memory.print_history()
+        memory.print_history()
 
 
 if __name__ == "__main__":
