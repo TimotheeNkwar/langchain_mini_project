@@ -1,23 +1,23 @@
-# 🎯 LangChain Mini Project - Q&A Assistant
+# LangChain Mini Project - Q&A Assistant
 
 A simple and clean Python project demonstrating how **LangChain** works with a practical Q&A assistant that answers questions based on uploaded documents.
 
-> 🚀 **Get started in 5 minutes!** | 📚 **Learn by example** | 🔧 **No API keys required**
+> **Get started in 5 minutes!** | **Learn by example** | **No API keys required**
 
-## ✨ Features at a Glance
+## Features at a Glance
 
-- ✅ **Zero API Dependencies** - Uses local embeddings and LLM
-- ✅ **Production-Ready Architecture** - Modern LCEL (LangChain Expression Language) syntax
-- ✅ **Comprehensive Knowledge Base** - 1000+ lines of LangChain documentation included
-- ✅ **Easy to Understand** - Clean, well-documented code with step-by-step workflow
-- ✅ **Fully Extensible** - Simple structure makes it easy to add features
-- ✅ **Educational Value** - Includes 30 test questions with expert-level scoring rubric
-- ✅ **Fast** - FAISS vector database for near-instant retrieval
-- ✅ **Vectorstore Persistence** - Save and reload FAISS cache for faster startup times
-- ✅ **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
-- ✅ **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
+- **Zero API Dependencies** - Uses local embeddings and LLM
+- **Production-Ready Architecture** - Modern LCEL (LangChain Expression Language) syntax
+- **Comprehensive Knowledge Base** - 1000+ lines of LangChain documentation included
+- **Easy to Understand** - Clean, well-documented code with step-by-step workflow
+- **Fully Extensible** - Simple structure makes it easy to add features
+- **Educational Value** - Includes 30 test questions with expert-level scoring rubric
+- **Fast** - FAISS vector database for near-instant retrieval
+- **Vectorstore Persistence** - Save and reload FAISS cache for faster startup times
+- **Conversation Memory** - MongoDB integration for persistent multi-turn conversations
+- **Document Conversion** - Built-in PDF/DOCX to text conversion with Docling
 
-## 📚 Project Overview
+## Project Overview
 
 This project implements a **Question & Answer system** that:
 
@@ -31,7 +31,7 @@ It's a practical implementation of the **Retrieval-Augmented Generation (RAG)** 
 
 ---
 
-## ⚡ Quick Start (5 Minutes)
+## Quick Start (5 Minutes)
 
 ### 1. Install Dependencies
 
@@ -49,21 +49,21 @@ python app.py
 ### 3. Ask Questions
 
 ```
-❓ Your question: What is LangChain?
-🤖 Answer: LangChain is a framework for developing applications powered by language models. It enables applications that are: data-aware (connect a language model to other sources of data), agentic (allow a language model to interact with its environment), and modular...
+Your question: What is LangChain?
+Answer: LangChain is a framework for developing applications powered by language models. It enables applications that are: data-aware (connect a language model to other sources of data), agentic (allow a language model to interact with its environment), and modular...
 
-❓ Your question: What are the main components?
-🤖 Answer: The main components include: LLMs (Language Models), Prompts, Chains, Memory, Retrievers, Document Loaders, Text Splitters, Embeddings, and Vector Stores. Each serves a specific purpose in the knowledge pipeline...
+Your question: What are the main components?
+Answer: The main components include: LLMs (Language Models), Prompts, Chains, Memory, Retrievers, Document Loaders, Text Splitters, Embeddings, and Vector Stores. Each serves a specific purpose in the knowledge pipeline...
 
-❓ Your question: exit
+Your question: exit
 [Program exits]
 ```
 
-**That's it!** You now have a working Q&A system. 🎉
+**That's it!** You now have a working Q&A system.
 
 ---
 
-## 🛠️ How It Works
+## How It Works
 
 ### Architecture Flow
 
@@ -106,13 +106,13 @@ python app.py
 
 ### Detailed Step-by-Step Process
 
-#### 1️⃣ **Document Loading** (`embeddings.py`)
+#### 1. **Document Loading** (`embeddings.py`)
 
 - Reads `data/data.txt` using `TextLoader`
 - Loads full document content into memory as raw text
 - Validates file exists and contains expected content
 
-#### 2️⃣ **Text Splitting** (`embeddings.py`)
+#### 2. **Text Splitting** (`embeddings.py`)
 
 - Splits document into overlapping chunks:
   - **Chunk size**: 500 characters per chunk
@@ -128,7 +128,7 @@ Next chunk starts with:   "...FAISS and Pinecone"
 (50 char overlap preserves connection)
 ```
 
-#### 3️⃣ **Embeddings Creation** (`embeddings.py`)
+#### 3. **Embeddings Creation** (`embeddings.py`)
 
 - Converts each text chunk to a numerical vector (384 dimensions)
 - Uses `HuggingFaceEmbeddings` with `sentence-transformers/all-MiniLM-L6-v2`
@@ -137,19 +137,19 @@ Next chunk starts with:   "...FAISS and Pinecone"
 
 **Why HuggingFace?**
 
-- ✅ Free and open-source
-- ✅ Fast inference (CPU-based)
-- ✅ Privacy-preserving (no data leaves machine)
-- ✅ 384-dimensional embeddings (good quality for cost)
+- Free and open-source
+- Fast inference (CPU-based)
+- Privacy-preserving (no data leaves machine)
+- 384-dimensional embeddings (good quality for cost)
 
-#### 4️⃣ **Vector Store Creation** (`embeddings.py`)
+#### 4. **Vector Store Creation** (`embeddings.py`)
 
 - Stores all embeddings in FAISS (Facebook AI Similarity Search)
 - Creates searchable index of document chunks
 - Enables fast nearest-neighbor search
 - Runs entirely in-memory (perfect for this project size)
 
-#### 5️⃣ **Retrieval Chain** (`chains.py`)
+#### 5. **Retrieval Chain** (`chains.py`)
 
 - When a question is asked:
   1. Converts question to an embedding
@@ -167,7 +167,7 @@ qa_chain = (
 )
 ```
 
-#### 6️⃣ **LLM Processing** (`chains.py`, `llm.py`, `app.py`)
+#### 6. **LLM Processing** (`chains.py`, `llm.py`, `app.py`)
 
 - Sends formatted prompt with context to `OllamaLLM`
 - LLM reads context chunks and generates answer
@@ -181,24 +181,24 @@ qa_chain = (
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 langchain_mini_project/
-├── README.md                    # 📖 This file
-├── app.py                       # 🚀 Main entry point
-├── llm.py                       # 🧠 LLM initialization
-├── embeddings.py                # 🔗 Document & vector store setup
-├── chains.py                    # ⛓️  Retrieval chain (LCEL syntax)
-├── memory.py                    # 💾 MongoDB conversation memory
-├── doc.py                       # 📄 Document conversion (PDF/DOCX to text)
-├── config.py                    # ⚙️  Configuration & env loading
-├── utils.py                     # 🔧 Cache management utilities
-├── requirements.txt             # 📦 Python dependencies
+├── README.md                    # This file
+├── app.py                       # Main entry point
+├── llm.py                       # LLM initialization
+├── embeddings.py                # Document & vector store setup
+├── chains.py                    # Retrieval chain (LCEL syntax)
+├── memory.py                    # MongoDB conversation memory
+├── doc.py                       # Document conversion (PDF/DOCX to text)
+├── config.py                    # Configuration & env loading
+├── utils.py                     # Cache management utilities
+├── requirements.txt             # Python dependencies
 ├── data/
-│   └── data.txt                 # 📚 Knowledge base (2500+ lines)
-├── vectorstore_cache/           # 💾 FAISS cache (auto-generated)
-└── testing_questions.txt        # ❓ 30 test questions with rubric (including memory tests)
+│   └── data.txt                 # Knowledge base (2500+ lines)
+├── vectorstore_cache/           # FAISS cache (auto-generated)
+└── testing_questions.txt        # 30 test questions with rubric (including memory tests)
 ```
 
 ### Detailed File Descriptions
@@ -223,13 +223,13 @@ langchain_mini_project/
 ```python
 # Interactive Q&A loop
 while True:
-    question = input("❓ Your question: ")
+    question = input("Your question: ")
     if question.lower() == "exit":
         break
     
     # Invoke the chain with the question
     response = chain.invoke({"question": question})
-    print(f"🤖 Answer: {response}\n")
+    print(f"Answer: {response}\n")
 ```
 
 #### **llm.py** - LLM Configuration
@@ -288,7 +288,7 @@ response = qa_chain.invoke({"question": "What is LangChain?"})
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -320,7 +320,7 @@ The first run will download the `sentence-transformers/all-MiniLM-L6-v2` model (
 
 ---
 
-## 💻 Usage
+## Usage
 
 ### Run the Q&A Assistant
 
@@ -331,19 +331,19 @@ python app.py
 ### Example Questions
 
 ```text
-❓ Your question: What is LangChain?
-🤖 Answer: LangChain is a powerful framework for developing applications...
+Your question: What is LangChain?
+Answer: LangChain is a powerful framework for developing applications...
 
-❓ Your question: What are the key components?
-🤖 Answer: The key components include LLMs, Prompts, Chains, Memory...
+Your question: What are the key components?
+Answer: The key components include: LLMs, Prompts, Chains, Memory...
 
-❓ Your question: exit
+Your question: exit
 [Program exits]
 ```
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -365,7 +365,7 @@ OPENAI_API_KEY=your_key_here  # Not required for this project
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 | Package | Purpose |
 |---------|---------|
@@ -382,7 +382,7 @@ OPENAI_API_KEY=your_key_here  # Not required for this project
 
 ---
 
-## 🎓 Learning Resources
+## Learning Resources
 
 This project teaches:
 
@@ -395,7 +395,7 @@ This project teaches:
 
 ---
 
-## 🔄 How the Chain Works (LCEL Syntax)
+## How the Chain Works (LCEL Syntax)
 
 ```python
 qa_chain = (
@@ -414,19 +414,19 @@ This creates a pipeline where:
 
 ---
 
-## 🌐 No API Keys Required
+## No API Keys Required
 
 This project is completely local:
 
-- ✅ Uses local embedding model (HuggingFace)
-- ✅ Uses local LLM (Ollama/Llama2)
-- ✅ No OpenAI API calls
-- ✅ Optional MongoDB for conversation memory
-- ✅ Runs entirely offline (after first model download)
+- Uses local embedding model (HuggingFace)
+- Uses local LLM (Ollama/Llama2)
+- No OpenAI API calls
+- Optional MongoDB for conversation memory
+- Runs entirely offline (after first model download)
 
 ---
 
-## 📝 Notes
+## Notes
 
 - First run creates and caches the vectorstore (~30-60 seconds)
 - Subsequent runs load the cached vectorstore in ~2-3 seconds
@@ -437,7 +437,7 @@ This project is completely local:
 
 ---
 
-## 🤝 Common Issues & Solutions
+## Common Issues & Solutions
 
 | Issue                   | Solution                                           |
 | ----------------------- | -------------------------------------------------- |
@@ -451,7 +451,7 @@ This project is completely local:
 
 ---
 
-## �️ MongoDB Integration (Conversation Memory)
+## MongoDB Integration (Conversation Memory)
 
 ### Setup
 
@@ -490,11 +490,11 @@ memory = create_memory(
 
 ### Memory Features
 
-- **Persistent Storage**: All conversations saved to MongoDB
-- **Unique Conversation IDs**: Each session has a unique identifier
-- **Timestamped Exchanges**: Every question-answer pair is timestamped
-- **Conversation Retrieval**: Load past conversations by ID
-- **Statistics**: View conversation metrics
+- Persistent Storage: All conversations saved to MongoDB
+- Unique Conversation IDs: Each session has a unique identifier
+- Timestamped Exchanges: Every question-answer pair is timestamped
+- Conversation Retrieval: Load past conversations by ID
+- Statistics: View conversation metrics
 
 ### Memory Methods
 
@@ -523,7 +523,7 @@ memory.clear()
 
 ---
 
-## 📄 Document Conversion (doc.py)
+## Document Conversion (doc.py)
 
 Convert PDF, DOCX, and other document formats to text for use as knowledge bases.
 
@@ -548,7 +548,7 @@ convert_doc_to_txt("data/resume.pdf", "data/resume.md")
 
 ---
 
-## �💾 Vectorstore Cache Management
+## Vectorstore Cache Management
 
 The project automatically caches the FAISS vectorstore for faster startup times.
 
@@ -580,7 +580,7 @@ python utils.py clear
 
 ---
 
-## 📚 Further Learning
+## Further Learning
 
 To extend this project, you could:
 
@@ -595,7 +595,7 @@ To extend this project, you could:
 
 ---
 
-## � MongoDB Integration (Conversation Memory)
+## MongoDB Integration (Conversation Memory)
 
 ### Setup
 
@@ -630,7 +630,7 @@ COLLECTION_NAME = "conversations"
 
 ---
 
-## 📄 Document Conversion (doc.py)
+## Document Conversion (doc.py)
 
 Convert PDF, DOCX, and other formats to text for knowledge bases.
 
@@ -650,7 +650,7 @@ convert_doc_to_txt("data/resume.pdf", "data/resume.md")
 
 ---
 
-## �📄 License
+## License
 
 This project is provided as a learning resource.
 
