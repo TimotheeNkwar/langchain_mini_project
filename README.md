@@ -123,9 +123,12 @@ Your question: exit
 **Example:**
 
 ```text
+```text
 Original chunk ends with: "...Vector stores like FAISS" 
 Next chunk starts with:   "...FAISS and Pinecone"
 (50 char overlap preserves connection)
+```
+
 ```
 
 #### 3. **Embeddings Creation** (`embeddings.py`)
