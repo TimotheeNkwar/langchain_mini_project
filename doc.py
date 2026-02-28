@@ -13,4 +13,4 @@ def convert_doc_to_txt(input_path, output_path):
     except Exception as e:
         print(f"Error converting document: {e}")
 
-convert_doc_to_txt("data/data.pdf", "data/cv.md")
+convert_doc_to_txt("data/data.pdf", "data/data.txt")
